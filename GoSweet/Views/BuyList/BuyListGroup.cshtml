@@ -1,0 +1,23 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<link rel="stylesheet" href="~/css/Search/style_buyList.css">
+<link rel="stylesheet" href="~/css/Search/style_star.css">
+    <div class="container pt-5 pb-3">
+    <h1 class="text-center" style="font-size:40px">團購中</h1>
+    <div class="row d-flex productBox">
+        <img src=@ViewBag.ProductData[0].ProductPic[0].PUrl alt="" class="m-md-auto m-lg-0 ps-5">
+        <div class="col-8">
+            <h2 class="text-center mt-3" style="font-size:32px">@ViewBag.ProductData[0].ProductData.PName</h2>
+            <p class="text-center" style="font-size: 22px;">
+                @ViewBag.ProductData[0].ProductData.PDescribe
+            </p>
+            <p class="text-center">購買數量 :  @ViewBag.num </p>
+            <p class="text-center">總價 : @ViewBag.total 元</p>
+        </div>
+    </div>
+    </div>
+@*</body>
+</html>*@

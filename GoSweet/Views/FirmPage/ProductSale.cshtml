@@ -1,0 +1,274 @@
+﻿<link rel="stylesheet" type="text/css" href="~/css/Firm/商品上架.css">
+<script src="
+https://cdn.jsdelivr.net/npm/sweetalert2@11.7.18/dist/sweetalert2.all.min.js
+"></script>
+<link href="
+https://cdn.jsdelivr.net/npm/sweetalert2@11.7.18/dist/sweetalert2.min.css
+" rel="stylesheet">
+
+<body>
+    <link rel="stylesheet" type="text/css" href="~/css/Firm/商品上架.css">
+
+    <div id="productSaleContent">
+        <div class="row">
+            <div class="col-2" id="sidebarContent">
+                <div class="sidebar" style="border-right: 1px solid #ccccccad; padding: 15px;">
+                    <div class="d-flex flex-column flex-shrink-0 p-3 col-3" style="width: 280px;">
+                        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-black text-decoration-none">
+                            <img src="@ViewBag.FirmPic" style="width:100px;">
+                            <span class="fs-4">&nbsp;&nbsp;  @ViewBag.FirmName</span>
+                            <!-- 點擊連到廠商首頁 -->
+                        </a>
+                        <hr>
+                        <ul class="nav">
+                            <li class="nav-item">
+                                <a href="#productdata" class="nav-link text-black" aria-current="page">
+                                    商品基本資料
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#productset" class="nav-link text-black">
+                                    商品團購設定
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#deliver" class="nav-link text-black">
+                                    配送方式
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#payment" class="nav-link text-black">
+                                    付款方式
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-10">
+                <div class="datacontent">
+                    <form enctype="multipart/form-data" action="" method="post">
+                        <br />
+                        <div style="border: 1px solid #ccc; box-shadow: 0 0 10px #ddd; padding: 3%; padding-left:5%; padding-right:6%; background-color: #ffff;">
+                            <p id="productdata">商品基本資料</p>
+                            <br />
+
+                            <div class="row">
+                                <div class="col-3 m-auto" style="line-height:25px;">
+                                    <label>商品名稱 </label>
+                                </div>
+                                <div class="col-9">
+                                    <input type="text" class="form-control" name="PName">
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-3 m-auto" style="line-height:25px;">
+                                    <label for="formFileMultiple" class="form-label">商品圖片</label>
+                                </div>
+                                <div class="col-9">
+                                    <input class="form-control" type="file" id="formFileMultiple" multiple name="files">
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-3 m-auto" style="line-height:25px;">
+                                    <label>商品類別</label>
+                                </div>
+                                <div class="col-9">
+                                    <select name="PCategory">
+                                        <option>蛋糕</option>
+                                        <option>餅乾</option>
+                                        <option>派</option>
+                                        <option>布丁</option>
+                                        <option>餐包</option>
+                                        <option>其他</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-3 m-auto" style="line-height:25px;">
+                                    <label>商品描述 </label>
+                                </div>
+                                <div class="col-9">
+                                    <textarea style="resize:none;" cols="70" rows="5" name="PDescribe" class="form-control"></textarea>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-3 m-auto" style="line-height:25px;">
+                                    <label for="formFileMultiple2" class="form-label">商品描述圖片</label>
+                                </div>
+                                <div class="col-9">
+                                    <input class="form-control" type="file" id="formFileMultiple2" multiple name="files">
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-3 m-auto" style="line-height:25px;">
+                                    <label>保存期限</label>
+                                </div>
+                                <div class="col-9">
+                                    <input type="text" class="form-control" name="PSavedate">
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-3 m-auto" style="line-height:25px;">
+                                    <label>保存方式</label>
+                                </div>
+                                <div class="col-9">
+                                    <select name="PSaveway">
+                                        <option>冷藏</option>
+                                        <option>冷凍</option>
+                                        <option>常溫</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-3 m-auto" style="line-height:25px;">
+                                    <label>商品價格</label>
+                                </div>
+                                <div class="col-9">
+                                    <input type="text" name="PPrice" class="form-control">
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-3 m-auto" style="line-height:25px;">
+                                    <label>商品庫存數量</label>
+                                </div>
+                                <div class="col-9">
+                                    <input type="number" min="0" name="PInventory" class="form-control">
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-3 m-auto" style="line-height:25px;">
+                                    <label>商品規格</label>
+                                </div>
+                                <div class="col-9">
+                                    <input type="text" name="PSpec" class="form-control">
+                                </div>
+                            </div>
+                            <br />
+
+                        </div>
+                        <br>
+                        <div style="border: 1px solid #ccc; box-shadow: 0 0 10px #ddd; padding: 3%; padding-left:5%; padding-right:6%; background-color: #ffff;">
+                            <p id="productset">商品團購設定</p>
+                            <br />
+
+                            <div class="row">
+                                <div class="col-3 m-auto" style="line-height:25px;">
+                                    <label>是否開放團購 </label>
+                                </div>
+                                <div class="col-9">
+                                    <input name="gobuy" type="radio" id="yes" value="1"><label for="yes">是</label>
+                                    <input name="gobuy" type="radio" id="no" value="2"><label for="no">否</label>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-3 m-auto" style="line-height:25px;">
+                                    <label>團購優惠價格 </label>
+                                </div>
+                                <div class="col-9">
+                                    <input type="text" name="GPrice" class="form-control">
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-3 m-auto" style="line-height:25px;">
+                                    <label>設定團購開始日期</label>
+                                </div>
+                                <div class="col-9">
+                                    <input type="date" name="GStart" class="form-control">
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-3 m-auto" style="line-height:25px;">
+                                    <label>設定團購結束日期</label>
+                                </div>
+                                <div class="col-9">
+                                    <input type="date" name="GEnd" class="form-control">
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-3 m-auto" style="line-height:25px;">
+                                    <label>團購數量</label>
+                                </div>
+                                <div class="col-9">
+                                    <input type="number" min="0" name="GMaxpeople" class="form-control">
+                                </div>
+                            </div>
+                            <br />
+
+                        </div>
+                        <br>
+                        <div style="border: 1px solid #ccc; box-shadow: 0 0 10px #ddd; padding: 3%; padding-left:5%; padding-right:6%; background-color: #ffff;">
+                            <p id="deliver">配送方式</p>
+                            <br />
+                            <div class="row">
+                                <div class="col-3 m-auto" style="line-height:25px;">
+                                    <label>超商 &nbsp;&nbsp;</label>
+                                </div>
+                                <div class="col-9">
+                                    <input type="radio" id="sevenEleven" value=""><label for="sevenEleven">&nbsp;7-11 </label>
+                                    <input type="radio" id="FamilyMart" value=""><label for="FamilyMart">&nbsp;全家 </label>
+                                    <input type="radio" id="Hi-Life" value=""><label for="Hi-Life">&nbsp;萊爾富 </label>
+                                    <input type="radio" id="ok" value=""><label for="ok">&nbsp;OK </label>
+                                    <br><br />
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-3 m-auto" style="line-height:25px;">
+                                    <label>宅配 &nbsp;&nbsp;</label>
+                                </div>
+                                <div class="col-9">
+                                    <input type="radio" id="cat" value=""><label for="cat">&nbsp;黑貓 </label>
+                                    <input type="radio" id="post" value=""><label for="post">&nbsp;郵局 </label>
+                                    <br><br />
+                                </div>
+                            </div>
+                            <br />
+
+                            <br>
+                            <div class="row">
+                                <div class="col-3 m-auto" style="line-height:25px;">
+                                    <p id="payment">付款方式</p>
+                                </div>
+                                <div class="col-9">
+                                    <input type="radio" id="creditcard" value=""><label for="creditcard">&nbsp;信用卡 </label>
+                                    <input type="radio" id="pay" value=""><label for="pay">&nbsp;貨到付款 </label>
+                                    <input type="radio" id="Line Pay" value=""><label for="Line Pay">&nbsp;Line Pay </label>
+                                </div>
+                            </div>
+                            <br />
+                        </div>
+                        <br />
+                        <input type="submit" value="上架" id="gosaleButton"> 
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    @if (TempData["SuccessFlag"] != null && (bool)TempData["SuccessFlag"] == true)
+    {
+        <script>
+            $(document).ready(function () {
+                Swal.fire({
+                    title: '商品上架完成',
+                    icon: 'success'
+                });
+            });
+        </script>
+    }
+
+</body>

@@ -1,0 +1,69 @@
+/*body {
+    display: flex;
+    background-color: #F7F1F0;
+    margin: 0;
+    padding: 0;
+}
+
+.row>* {
+    padding-left: 0;
+    padding-right: 0;
+}*/
+
+#imgMain {
+    /* margin-left: 150px; */
+    /*padding-left: 150px;*/
+}
+
+.d-flex a.buyBtn {
+    padding: 5px 20px; 
+    background-color: #A15C38;
+    color: #F7F1F0;
+    /* margin: auto; */
+    margin: 30px;
+    font-size:28px;
+}
+
+    .d-flex a.buyBtn:hover {
+        background-color: #C3A6A0;
+    }
+
+.introduce {
+    font-size: 28px;
+}
+
+#buyNum{
+    width: 100px;
+    text-align: center;
+}
+
+#img1{
+    /*margin-left: 150px;*/
+}
+
+img.imgBox {
+    opacity: 50%!important;
+}
+
+    img.imgBox:hover {
+        opacity: 100% !important;
+        cursor: pointer !important;
+    }
+
+
+    img.imgBox.openImg {
+        opacity: 100% !important;
+    }
+
+.cakeData{
+    /*padding-right: 100px;*/
+    line-height:50px;
+}
+
+.cakeData p{
+    font-size:28px;
+}
+
+.product span,label{
+    font-size:28px
+}

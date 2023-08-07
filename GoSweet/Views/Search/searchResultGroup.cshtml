@@ -1,0 +1,76 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    void test3(dynamic vv) {
+        double vvv = 0;
+        for (int i = 0; i < vv.Count; i++) {  
+            vvv = (Convert.ToDouble(@vv[i].AverageOCscore) / 5) * 100;
+            <div class="card col-lg-4 col-md-2 col-sm-1 proCard p-0 " style="width: 20rem;">
+                <img src=@vv[i].FirstResult.PUrl class="card-img-top"
+                         alt="...">
+                    <div class="card-body">
+                    <h5 class="card-title padd">@vv[i].FirstResult.PName</h5>
+                    <p class="card-text padd">$ @vv[i].FirstResult.PPrice 元</p>
+                        <div class="d-flex justify-content-between padd">
+                        <span class="card-text padd">售出數量 : @vv[i].FirstResult.PInventory</span>
+                        <div class="evaluate pe-5">
+                            <div class="ratings">
+                                <div class="empty_star">★★★★★</div>
+                                <div class="full_star" style="width :@vvv% ">★★★★★</div>
+                            </div>
+                            &nbsp;<span>@vv[i].AverageOCscore</span>
+                        </div>
+                        </div>
+                    <a href="./Product?pid=@vv[i].FirstResult.PNumber" class="btn result mt-3 ">
+                            前往購買
+                        </a>
+                    </div>
+                </div>
+                
+            
+        }
+    }
+}
+
+<link rel="stylesheet" href="~/css/Search/style_searchResult.css">
+<link rel="stylesheet" href="~/css/Search/style_star.css">
+<script src="https://code.jquery.com/jquery-3.7.0.slim.min.js"></script>
+<div class="container pb-5  pt-3">
+	<div>
+		<div>
+			<div class="row pt-4">
+				<div class="col-12 result_top d-flex position-relative">
+                    <h2 style="	font-size:40px">團購商品</h2>                    
+					<div class="sort " id="evaluate">依評價排序</div>
+					<div class="sort " id="low_high">價格 : 低到高</div>
+					<div class="sort " id="high_low">價格 : 高到低</div>
+				</div>
+                @{
+                    test3(@ViewBag.ProductDatatablesJoin);
+                }
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+    $("#low_high").click(() => {
+        $(".proCard").remove()
+        $(".row.pt-4").append(`@{
+        test3(@ViewBag.ProductDatatablesLow);
+    }`);
+    });
+    $("#high_low").click(() => {
+        $(".proCard").remove()
+        $(".row.pt-4").append(`@{
+        test3(@ViewBag.ProductDatatablesHigh);
+    }`);
+    })
+    $("#evaluate").click(() => {
+        $(".proCard").remove()
+        $(".row.pt-4").append(`@{
+        test3(@ViewBag.ProductDatatablesPT);
+    }`);
+    })
+</script>

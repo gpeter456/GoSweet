@@ -1,0 +1,736 @@
+@{
+
+
+}
+<script src="https://code.jquery.com/jquery-3.7.0.slim.min.js" integrity="sha256-tG5mcZUtJsZvyKAxYLVXrmjKBVLd6VpVccqz/r4ypFE=" crossorigin="anonymous"></script>
+
+<script>
+    let olistnumber
+    $(function () {
+        //領貨確認後寫入db
+        $('.getproduct').on('click', function () {
+            console.log(parseInt($('#s_onumber').text()))
+            console.log($('.shipget').eq(olistnumber).html())
+            //觸發動態訂單
+            getrow(olistnumber)
+
+            //if (!($('.shipget').eq(olistnumber).html() == "確認寄出")) {
+            //    console.log('已寄出不寫入')
+            //    return;
+            //}
+            //$('.o_shipstatus').eq(olistnumber).text('已寄出')
+            //$('.shipget').eq(olistnumber).html("已寄出")
+            //console.log('寄出寫入')
+
+
+            //let onum = parseInt($('#s_onumber').text())
+            //$.post('/Order_datatable/orderdone2', { 'onumber': onum })
+            //    .done(function (data) {
+            //        console.log($('#s_onumber').text() + " onumber is done" + data);
+            //    });
+        })
+
+        //取得訂單評分資料傳給db
+        $('.save_assess').on('click', function () {
+
+            let ofs = $('.ofs option').filter(':selected').val()
+
+            console.log(parseInt($('#o_number').text()))
+            $.post('/Order_datatable/setassess2', {
+                onumber: parseInt($('#o_number').text()),
+                ofs: parseFloat(ofs),
+                ofm: $('.ofm').val()
+            }).done(function (data) {
+                console.log(data);
+            });
+            $('.assess').eq(olistnumber).html("訂單詳細")
+        })
+
+        //排序觸發搜尋按鈕
+        $('.orderby').change(function () {
+            $(".searchorder").trigger("click");
+        });
+
+        //搜尋訂單按鈕事件
+        $('.searchorder').on('click', function () {
+            //搜尋訂單
+            $.post('/Order_datatable/search_f', {
+                start: $('.start').val(),
+                end: $('.end').val(),
+                o_type: $('.o_type option').filter(':selected').text(),
+                o_status: $('.o_status option').filter(':selected').text(),
+                ship_status: $('.ship_status option').filter(':selected').text(),
+                orderby: $('.orderby').val(),
+                onumber: parseInt($('.s_onumber').val()),
+                cname:$('.s_cname').val()
+            })
+                .done(function (data) {
+                    console.log(data)
+                    let data2 = JSON.parse(data)
+                    let count = 0
+                    $('.orderlist').empty()
+                    $(data2).each(function () {
+                        let item = this
+
+                        let x1
+                        let x2
+                        if (item.otype) {
+                            x1 = '<label for= "" style = "font-size: 28px;" class= "o_type" > 團購</label>'
+                        }
+                        else {
+                            x1 = '<label for= "" style = "font-size: 28px;" class= "o_type" > 直購</label>'
+                        }
+                        //x2 = `<input type="button" class="btn btn-primary btn-lg shipget" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick = "shipget(${count},${item.onumber})" value="確認取貨"  >`
+                        if (item.oshipstatus == "未寄出") {
+                            x2 = `<input type="button" class="btn btn-primary btn-lg shipget" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick = "shipget(${count},${item.onumber})" value="確認寄出"  >`
+                        }
+                        else  {
+                            x2 = `<input type="button" class="btn btn-primary btn-lg shipget" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick = "shipget(${count},${item.onumber})" value="${item.oshipstatus}"  >`
+                        }
+
+                        console.log(x1)
+                        console.log(x2)
+                        $('.orderlist').append(`
+
+                                                    <div class="row getrow" style="margin: 20px;" >
+                                            <div class="col-3 mb-1">
+                                                    <a href=""><img src="${item.pic}" style="width: 100%;" class="o_ppic" alt=""></a>
+                                                    
+                                                    <label for="" style="display: none;" class="o_place">${item.oplace}</label>
+                                            </div>
+
+
+                                            <div class="col-5 mb-1">
+
+
+                                                <table style="height: 100%; width: 100%;">
+                                                    <tr style="height: 33%; text-align: center; vertical-align: middle;">
+                                                        <td style="vertical-align: middle;">
+                                                                       <label for="" style="font-size: 28px;" class="o_pname">${item.pname}</label>
+                                                <br>
+                                                <label for="" style="font-size: 28px; margin-top: 20px;">客戶名稱：</label>
+                                                    <label for="" style="font-size: 28px; margin-top: 20px;" class="o_cname">${item.cname}</label>
+                                                        </td>
+                                                    </tr>
+                                                    <tr style="height: 66%;">
+                                                        <td>
+                                                            <div class="row" style="height: 100%; ">
+                                                                <div class="col-6 mb-1">
+                                                                    <table style="height: 100%; width: 100%; text-align: center">
+                                                                        <tr style="height: 50%;">
+                                                                            <td>
+                                                                                <label for="" style="font-size: 28px;">數量:</label>
+                                                                                    <label for="" style="font-size: 28px;" class="o_pbuynumber">${item.pbuy} </label>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr style="height: 50%;">
+                                                                            <td>
+                                                                                    <label for="" style="font-size: 28px;" class="o_status">${item.ostatus} </label>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
+                                                                <div class="col-6 mb-1">
+                                                                    <table style="height: 100%; text-align: center">
+
+                                                                        <tr style="height: 50%;">
+                                                                            <td>
+                                                                                <label for="" style="font-size: 28px;">種類：</label>
+                                                                                `+
+                            `${x1}`
+                            + `
+
+
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr style="height: 50%;">
+                                                                            <td>
+                                                                                    <label for="" style="font-size: 28px;" class="o_shipstatus">${item.oshipstatus}</label>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+
+                                            </div>
+
+                                            <div class="col-4 mb-1">
+                                                <table style="height: 100%;">
+                                                    <tr style="height: 33%; text-align: center">
+                                                        <td>
+                                                                <label for="" style="font-size: 24px;" class="o_starttime">下單日期：${item.ostart}</label>
+                                                        </td>
+                                                    </tr>
+                                                    <tr style="height: 66%;">
+                                                        <td>
+                                                            <div class="row" style="height: 100%; ">
+                                                                <div class="col-6 mb-1">
+                                                                    <table style="height: 100%; width: 100%; text-align: center">
+                                                                        <tr style="height: 50%;">
+                                                                            <td>
+                                                                                    <label for="" style="font-size: 48px; color: red;" class="o_pprice">$${item.oprice}</label>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr style="height: 50%;">
+                                                                            <td>
+                                                                                        <button class="btn btn-primary btn-lg assess" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="assess(${count},${item.onumber} )">我要評分</button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
+                                                                <div class="col-6 mb-1">
+                                                                    <table style="height: 100%; text-align: center">
+
+                                                                        <tr style="height: 50%;">
+                                                                            <td>
+                                                                                    <a href="/Talk_datatable/talk_f" onclick="gotalk(${item.onumber})"><img src="/img/order/chat.png" style="width: 50%;" alt=""></a>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr style="height: 50%;">
+                                                                            <td>
+                                                                            `+
+                            `${x2}`
+
+                            + `
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+
+                                            </div>
+
+                                        </div>
+
+
+
+                                `)
+
+                        count++
+                    })
+                })
+        })
+
+
+        
+    })
+
+    //領貨確認後寫入db  for 動態訂單
+    function getrow(olistnumber) {
+        console.log($('.getrow').eq(olistnumber).find('.shipget').val())
+        let ship = $('.getrow').eq(olistnumber).find('.shipget').val()
+        console.log(ship)
+        console.log(olistnumber)
+        if (!(ship == "確認寄出")) {
+            console.log('已寄出不寫入')
+            return;
+        }
+        $('.getrow').eq(olistnumber).find('.o_shipstatus').text('已寄出')
+        $('.getrow').eq(olistnumber).find('.shipget').val("已寄出")
+        console.log('寄出寫入')
+
+
+        let onum = parseInt($('#s_onumber').text())
+        $.post('/Order_datatable/orderdone2', { 'onumber': onum })
+            .done(function (data) {
+                console.log($('#s_onumber').text() + " onumber is done" + data);
+            });
+     }
+
+
+
+    // 動態訂單評分
+    function assess(listnumber, onumber) {
+        olistnumber = listnumber
+        $('#o_number').text(onumber)
+        $('#p_pic').attr('src', $('.o_ppic').eq(listnumber).attr('src'))
+        $('#a_time').text($('.o_starttime').eq(listnumber).text())
+        $('#c_name').text($('.o_cname').eq(listnumber).text())
+        $('#p_name').text($('.o_pname').eq(listnumber).text())
+        $('#p_price').text($('.o_pprice').eq(listnumber).text())
+        //取得評分資料
+        $.post('/Order_datatable/getassess2', { 'onumber': onumber })
+            .done(function (data) {
+                if (!(data == "null")) {
+                    let data2 = JSON.parse(data)
+                    if (data2[0].ofs) {
+                        $('.ofs option').each(function () {
+                            if ($(this).val() == data2[0].ofs) {
+                                console.log($(this).val())
+                                $(this).attr('selected', 'selected')
+                            }
+                        })
+                    } else {
+                        $('.ofs option').filter(':selected').attr('selected', false)
+                        $('.ofs option').eq(0).attr('selected', true)
+                    }
+                    if (data2[0].ofm) {
+                        $('.ofm').val(data2[0].ofm)
+                    } else {
+                        $('.ofm').val(null)
+                    }
+                    if (data2[0].ocs) {
+                        $('.ocs').text(data2[0].ocs)
+                    } else {
+                        $('.ocs').text('未評分')
+                    }
+                    if (data2[0].ocm) {
+                        $('.ocm').val(data2[0].ocm)
+                    } else {
+                        $('.ocm').val(null)
+                    }
+                } else {
+                    console.log('data is null')
+                    $('.ofs option').filter(':selected').attr('selected', false)
+                    $('.ofm').val(null)
+                    $('.ocs').text('未評分')
+                    $('.ocm').val(null)
+                }
+
+
+            });
+    }
+
+    // 動態取貨結單
+    function shipget(listnumber, onumber) {
+        olistnumber = listnumber
+        $.post('/Order_datatable/getship', { onumber: onumber })
+            .done(function (data) {
+                data2 = JSON.parse(data)
+                $('#s_cname').text($('.o_cname').eq(listnumber).text())
+                $('#s_pname').text($('.o_pname').eq(listnumber).text())
+                $('#s_buynumber').text($('.o_pbuynumber').eq(listnumber).text())
+                $('#s_onumber').text(onumber)
+                $('#s_ship').text(data2[0].ship)
+                $('#s_place').text($('.o_place').eq(listnumber).text())
+            })
+        
+
+    }
+
+    //客戶加入聊天室名單
+    function gotalk(onumber) {
+        $.post('/Order_datatable/gotalk2', { onumber: onumber }).done(function (data) {
+            console.log(data)
+            //window.location.assign("/test3/index")
+        })
+    }
+
+
+
+</script>
+<style>
+    td {
+        vertical-align: middle;
+    }
+</style>
+
+<body>
+    <div class="container">
+        <!-- 最外端分割 -->
+        <div class="row">
+
+            <div class="col-12">
+
+                <div style="border: 1px solid #ccc; box-shadow: 0 0 10px #ddd; margin-top: 20px;">
+                    <label style="font-size:40px ;margin-left: 40px;">訂單紀錄</label>
+                </div>
+                <!-- 搜尋列開始 -->
+                <div style="margin-top: 20px; border: 1px solid #ccc; box-shadow: 0 0 10px #ddd;">
+                    <div style="margin: 30px;">
+                        <div class="row">
+                            <div class="col-5">
+                                <label for="" style="font-size: 28px;">搜尋日期：</label>
+                                <input type="date" name="start" class="start">
+                                <label for="" style="font-size: 28px;">到</label>
+                                <input type="date" name="end" class="end">
+                            </div>
+
+                            <div class="col-3">
+                                <label for="" style="font-size: 28px;">訂單狀態：</label>
+                                <select class="form-select form-select-lg mb-3 o_status" style="width: 50%; display: inline-block;" name="o_status" id="">
+                                    <option value="" selected>全部</option>
+                                    <option value="">已下單</option>
+                                    <option value="">已結單</option>
+                                    
+                                </select>
+                            </div>
+                            <div class="col-3">
+                                <label for="" style="font-size: 28px;">訂單類型：</label>
+                                <select class="form-select form-select-lg mb-3 o_type" style="width: 50%; display: inline-block;" name="o_type" id="">
+                                    <option value="" selected>全部</option>
+                                    <option value="">直購</option>
+                                    <option value="">團購</option>
+                                </select>
+                            </div>
+                            <div class="col-1"></div>
+                        </div>
+                        <!-- 搜尋列分割 -->
+                        <div class="row" style="margin-top: 20px;">
+                            <div class="col-4">
+                                <label for="" style="font-size: 28px;">訂單編號：</label>
+                                <input type="text" class="s_onumber" style="font-size: 24px; width:60%;">
+                            </div>
+
+                            <div class="col-4">
+                                <label for="" style="font-size: 28px;">客戶名稱：</label>
+                                <input type="text" class="s_cname" style="font-size: 24px;  width:60%;">
+                            </div>
+
+                            <div class="col-4">
+                                <label for="" style="font-size: 28px;">貨物狀態：</label>
+                                <select class="form-select form-select-lg mb-3 ship_status" style="width: 40%; display: inline-block;" name="ship_status" id="">
+                                    <option value="" selected>全部</option>
+                                    <option value="">未寄出</option>
+                                    <option value="">已寄出</option>
+                                    <option value="">已取貨</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row ">
+                            <div class="col-8"></div>
+
+                            <div class="col-4">
+                                <button class="btn btn-primary btn-lg searchorder">搜尋訂單</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- 排序按鈕 -->
+                <div class="row" style="margin-top: 20px; margin-left: 0px;">
+                    <div class="col-4">
+                    </div>
+                    <div class="col-4">
+                    </div>
+                    <div class="col-4">
+                        <label for="" style="font-size: 30px">排序：</label>
+                        <select class="form-select form-select-lg mb-3 orderby" style="width: 50%; display: inline-block;" aria-label=".form-select-lg example">
+                            <option value="1" selected>日期新到舊</option>
+                            <option value="2">價格高到低</option>
+                            <option value="3">價格低到高</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- 外框設定 -->
+                <div class="orderlist" style=" border: 1px solid #ccc; box-shadow: 0 0 10px #ddd; margin-bottom: 50px; min-height: 1800px;">
+                    <!-- 商品列表 -->
+                    @* viewbag 拿出訂單資料顯示 *@
+                    @for (int count = 0; count < ViewBag.order2.Count; count++)
+                    {
+                        var item = ViewBag.order2[count];
+
+                        <div class="row getrow" style="margin: 20px;">
+                            <div class="col-3 mb-1">
+                                <a href=""><img src="@item.pic" style="width: 100%;" class="o_ppic" alt=""></a>
+                                @*<label for="" style="display: none;" class="o_ship">@item.oship</label>*@
+                                <label for="" style="display: none;" class="o_place">@item.oplace</label>
+                            </div>
+
+
+                            <div class="col-5 mb-1">
+
+
+                                <table style="height: 100%; width: 100%;">
+                                    <tr style="height: 33%; text-align: center; vertical-align: middle;">
+                                        <td style="vertical-align: middle;">
+                                            <label for="" style="font-size: 28px;" class="o_pname">@item.pname</label>
+                                            <br>
+                                            <label for="" style="font-size: 28px; margin-top: 20px;">客戶名稱：</label>
+                                            <label for="" style="font-size: 28px; margin-top: 20px;" class="o_cname">@item.cname</label>
+                                        </td>
+                                    </tr>
+                                    <tr style="height: 66%;">
+                                        <td>
+                                            <div class="row" style="height: 100%; ">
+                                                <div class="col-6 mb-1">
+                                                    <table style="height: 100%; width: 100%; text-align: center">
+                                                        <tr style="height: 50%;">
+                                                            <td>
+                                                                <label for="" style="font-size: 28px;">數量:</label>
+                                                                <label for="" style="font-size: 28px;" class="o_pbuynumber">@item.pbuy </label>
+                                                            </td>
+                                                        </tr>
+                                                        <tr style="height: 50%;">
+                                                            <td>
+                                                                <label for="" style="font-size: 28px;" class="o_status">@item.ostatus</label>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                <div class="col-6 mb-1">
+                                                    <table style="height: 100%; text-align: center">
+
+                                                        <tr style="height: 50%;">
+                                                            <td>
+                                                                <label for="" style="font-size: 28px;">種類：</label>
+                                                                @if (@item.otype)
+                                                                {
+                                                                    <label for="" style="font-size: 28px;" class="o_tyoe">團購</label>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <label for="" style="font-size: 28px;" class="o_tyoe">直購</label>
+                                                                }
+                                                            </td>
+                                                        </tr>
+                                                        <tr style="height: 50%;">
+                                                            <td>
+                                                                <label for="" style="font-size: 28px;" class="o_shipstatus">@item.oshipstatus</label>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+
+                            <div class="col-4 mb-1">
+                                <table style="height: 100%;">
+                                    <tr style="height: 33%; text-align: center">
+                                        <td>
+                                            <label for="" style="font-size: 24px;" class="o_starttime">下單日期：@item.ostart</label>
+                                        </td>
+                                    </tr>
+                                    <tr style="height: 66%;">
+                                        <td>
+                                            <div class="row" style="height: 100%; ">
+                                                <div class="col-6 mb-1">
+                                                    <table style="height: 100%; width: 100%; text-align: center">
+                                                        <tr style="height: 50%;">
+                                                            <td>
+                                                                <label for="" style="font-size: 48px; color: red;" class="o_pprice">$@item.oprice</label>
+                                                            </td>
+                                                        </tr>
+                                                        <tr style="height: 50%;">
+                                                            <td>
+                                                                <button class="btn btn-primary btn-lg assess" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="assess(@count,@item.onumber )">我要評分</button>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                <div class="col-6 mb-1">
+                                                    <table style="height: 100%; text-align: center">
+
+                                                        <tr style="height: 50%;">
+                                                            <td>
+                                                                <a href="/Talk_datatable/talk_f" onclick="gotalk(@item.onumber)"><img src="/img/order/chat.png" style="width: 50%;" alt=""></a>
+                                                            </td>
+                                                        </tr>
+                                                        <tr style="height: 50%;">
+                                                            <td>
+                                                                @if ((@item.oshipstatus == "未寄出"))
+                                                                {
+
+                                                                    <input type="button" class="btn btn-primary btn-lg shipget" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="shipget(@count,@item.onumber)" value="確認寄出">
+                                                                    
+                                                                }
+                                                                else
+                                                                {
+                                                                    <input type="button" class="btn btn-primary btn-lg shipget" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="shipget(@count,@item.onumber)" value="@item.oshipstatus">
+
+                                                                    
+
+                                                                }
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+
+                        </div>
+                    }
+
+
+
+
+
+
+                </div>
+
+
+                <div>
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination pagination-lg justify-content-center">
+                            <li class="page-item"><a class="page-link" href="#">上一頁</a></li>
+                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link" href="#">下一頁</a></li>
+                        </ul>
+                    </nav>
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- 訂單評分Modal -->
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title" id="staticBackdropLabel">訂單詳細資料</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- 互動表單內容 -->
+                        <!-- 允許使用bootstrap row 排版 -->
+                        <div class="container-fluid">
+                            <div class="mb-3">
+                                <label for="" style="font-size: 30px;">訂單編號：</label>
+                                <label for="" style="font-size: 30px;" id="o_number"></label>
+                            </div>
+                            <!-- 訂單資料顯示 -->
+                            <div class="row">
+                                <div class="col-4">
+                                    <img src="/img/order/蛋糕2.jpg" style="width: 100%;" alt="" id="p_pic">
+                                </div>
+                                <div class="col-8">
+                                    <table style="height: 100%;">
+                                        <tr style="height: 33%;">
+                                            <td>
+                                                <label for="" style="font-size: 28px;" id="a_time"></label>
+                                            </td>
+                                        </tr>
+                                        <tr style="height: 33%;">
+                                            <td>
+                                                
+                                                <label for="" style="font-size: 28px;" id="p_name">人氣餐包</label>
+                                                <br />
+                                                <label for="" style="font-size: 28px;" >客戶名稱：</label>
+                                                <label for="" style="font-size: 28px;" id="c_name"></label>
+                                            </td>
+                                        </tr>
+                                        <tr style="height: 33%;">
+                                            <td>
+                                                <label for="" style="font-size: 48px; color: red;" id="p_price"></label>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div style="text-align: center; margin-top: 30px;">
+                                    <label for="" style="font-size: 36px;">廠商評分：</label>
+                                    <select name="" id="myselect" class="form-select form-select-lg mb-3 ofs" style="width: 100px; display: inline-block;">
+                                        <option value="5">5</option>
+                                        <option value="4.5">4.5</option>
+                                        <option value="4">4</option>
+                                        <option value="3.5">3.5</option>
+                                        <option value="3">3</option>
+                                        <option value="2.5">2.5</option>
+                                        <option value="2">2</option>
+                                        <option value="1.5">1.5</option>
+                                        <option value="1">1</option>
+                                    </select>
+                                    <label for="" style="font-size: 36px;">分</label>
+                                </div>
+
+                                <div style="text-align: center; margin-top: 30px; ">
+                                    <label for="" style="font-size: 36px;">廠商評論：</label>
+                                    <br>
+                                    <textarea rows="4" style="width: 450px; font-size: 28px; resize: none;" class="ofm" placeholder="請輸入評論"></textarea>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div style="text-align: center; margin-top: 30px;">
+                                    <label for="" style="font-size: 36px;">客戶評分：</label>
+                                    <label for="" style="font-size: 36px;" class="ocs">未評分</label>
+                                </div>
+
+                                <div style="text-align: center; margin-top: 30px; ">
+                                    <label for="" style="font-size: 36px;">客戶評論：</label>
+                                    <br>
+                                    <textarea rows="4" style="width: 450px; font-size: 28px; resize: none;" class="ocm" disabled>無評論</textarea>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary btn-lg save_assess" data-bs-dismiss="modal">儲存評分</button>
+                        <button type="button" class="btn btn-secondary btn-lg" data-bs-dismiss="modal">離開</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- 確認出貨 Modal -->
+    <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title " id="exampleModalLabel" style="font-size: 40px;">確認寄出</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- 內容填寫 -->
+                    <div>
+                        <div>
+                            <label for="" style="font-size: 30px;">訂單編號：</label>
+                            <label for="" style="font-size: 30px;" id="s_onumber"></label>
+                        </div> 
+                        <div >
+                            <label for="" style="font-size: 28px;" id="s_pname"></label>
+                        </div>
+                        <div >
+                            <label for="" style="font-size: 28px;">數量：</label>
+                            <label for="" style="font-size: 28px;" id="s_buynumber"></label>
+                        </div>
+                    </div>
+                    <br>
+                    <div>
+                        <label for="" style="font-size: 20px;">運送方式：</label>
+                        <label for="" style="font-size: 20px;" id="s_ship">ship</label>
+                    </div>
+                    <div>
+                        <label for="" style="font-size: 20px;" >客戶名稱：</label>
+                        <label for="" style="font-size: 20px;" id="s_cname"></label>
+                        <br />
+                        <label for="" style="font-size: 20px;" id="s_place">地址</label>
+                    </div>
+                    <br>
+                    <div>
+                        <label for="" style="font-size: 20px;">已成功寄出貨物的情況，<br>請按確認繼續。</label>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary btn-lg getproduct" data-bs-dismiss="modal">確認</button>
+                    <button type="button" class="btn btn-secondary btn-lg" data-bs-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</body>

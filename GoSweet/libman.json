@@ -1,0 +1,56 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "bootstrap@5.3.0",
+      "destination": "wwwroot/lib/bootstrap/"
+    },
+    {
+      "library": "bootstrap-icons@1.10.5",
+      "destination": "wwwroot/lib/bootstrap-icons/"
+    },
+    {
+      "library": "splidejs@4.1.4",
+      "destination": "wwwroot/lib/splidejs/"
+    },
+    {
+      "provider": "jsdelivr",
+      "library": "@splidejs/splide-extension-grid@0.4.1",
+      "destination": "wwwroot/lib/splidejs/splide-extension-grid/"
+    },
+    {
+      "library": "plotly.js@2.24.2",
+      "destination": "wwwroot/lib/plotly.js/"
+    },
+    {
+      "library": "Chart.js@4.3.0",
+      "destination": "wwwroot/lib/Chart.js/"
+    },
+    {
+      "library": "d3.chart@0.3.0",
+      "destination": "wwwroot/lib/d3.chart/"
+    },
+    {
+      "library": "d3@7.8.5",
+      "destination": "wwwroot/lib/d3/"
+    },
+    {
+      "provider": "unpkg",
+      "library": "@microsoft/signalr@latest",
+      "destination": "wwwroot/lib/microsoft/signalr/",
+      "files": [
+        "dist/browser/signalr.js.map",
+        "dist/browser/signalr.min.js.map"
+      ]
+    },
+    {
+      "library": "sweetalert2@11.7.18",
+      "destination": "wwwroot/lib/sweetalert2/"
+    },
+    {
+      "library": "axios@1.4.0",
+      "destination": "wwwroot/lib/axios/"
+    }
+  ]
+}

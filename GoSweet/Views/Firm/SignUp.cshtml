@@ -1,0 +1,36 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using Newtonsoft.Json;
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_LayoutLoginSignUp";
+}
+
+@section Head{
+    <link rel="stylesheet" href="~/css/SignUp/SignUp.css"/>
+    <link rel="stylesheet" href="~/lib/sweetalert2/sweetalert2.min.css"/>
+}
+
+
+
+@await Html.PartialAsync("~/Pages/Shared/_SignUp.cshtml");
+
+@section Scripts{
+    <script src="~/lib/sweetalert2/sweetalert2.js"></script>
+    <script src="~/js/PasswordCheck.js"></script>
+    <script src="~/js/messageAlert.js"></script>
+
+
+    @*帳號已存在訊息*@
+    @if (TempData["firmAccountExistMessage"] != null)
+    {
+        <script>
+            let firmAccountExistMessage = @Html.Raw(JsonConvert.SerializeObject(TempData["firmAccountExistMessage"]));
+            showSwal('error', 'Oops...', firmAccountExistMessage);
+        </script>
+    }
+
+}
+

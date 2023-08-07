@@ -1,0 +1,48 @@
+/*body {
+    display: flex;
+    background-color: #F7F1F0;
+    margin: 0;
+    padding: 0;
+}*/
+
+.buyCheck{
+    margin-top: 30px;
+}
+
+.productBox {
+    /* background-color: #c3a6a0; */
+    /*background-color: #c3a6a0;*/
+    background-color: #F7F1F0;
+    border:solid 0.5px black;
+}
+
+.productBox p{
+    font-size: 28px;
+    margin-top:15px;
+}
+
+.row.productBox img {
+    width: 350px;
+    padding: 20px;
+}
+
+.buyCheck input{
+    padding: 20px 40px;
+    text-decoration:none;
+    background-color: #A15C38;
+    color: #F7F1F0;
+    /* background-color: #F7F1F0; */
+}
+
+    .buyCheck input:hover {
+        background-color: #c3a6a0;
+    }
+
+.buyCheck span{
+    text-align: center;
+    font-size: 25px;
+}
+
+.sendWay{
+    font-size:28px;
+}

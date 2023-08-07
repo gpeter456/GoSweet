@@ -1,0 +1,138 @@
+#ProductSearchContent {
+    background-color: #f7f1f0;
+    font-size: 22px;
+    padding:2%;
+    padding-top:0.5%;
+}
+
+
+/*搜尋欄邊框*/
+#block {
+    padding: 1.5%;
+    padding-left: 3%;
+    padding-top: 2.5%;
+    background-color: #fff;
+}
+
+/*排序條件按鈕設定*/
+    #selectbutton button {
+    border: 0px; /* 去除邊框 */
+    padding: 8px;
+    background-color: #c3a6a0e1;
+}
+    #selectbutton button:hover {
+        background-color: #c3a6a09a;
+    }
+    #all {
+    border: 0px; /* 去除邊框 */
+    padding: 8px;
+    background-color: #c3a6a0e1;
+}
+    #all:hover {
+        background-color: #c3a6a09a;
+    }
+/*排序條件按鈕設定 end */
+
+/*團購排序按鈕設定*/
+#buyall {
+    border: 0px; /* 去除邊框 */
+    padding: 8px;
+    background-color: #c3a6a0e1;
+}
+#buyall:hover {
+    background-color: #c3a6a09a;
+}
+/*團購排序按鈕設定 end */
+
+    /*上一頁 下一頁按鈕設定*/
+    #pre {
+    border: 0px; /* 去除邊框 */
+    padding: 8px;
+    background-color: #c3a6a0e1;
+}
+    #pre:hover {
+        background-color: #c3a6a09a;
+    }
+#next {
+    border: 0px; /* 去除邊框 */
+    padding: 8px;
+    background-color: #c3a6a0e1;
+}
+#next:hover {
+    background-color: #c3a6a09a;
+}
+/*上一頁 下一頁按鈕設定 end */
+
+/* 標題文字 */
+#search {
+    font-size: 40px;
+}
+
+/*搜尋列表*/
+.table_change {
+    /*table格式*/
+    text-align: center;
+    /*margin: 2%;*/
+    margin-right: 1%;
+    width: 100%;
+}
+.table_change img{
+    width:140px;
+}
+    .table_change tr {
+        max-height: 140px;
+    }
+
+    thead {
+        background-color: #c3a6a0;
+    }
+th {
+    /*color: #fff;*/
+    font-weight: bold;
+}
+
+.buydate {
+    font-size: 18px;
+}
+
+/* 頁碼 */
+#pagenumber {
+    margin-left: 37%;
+}
+
+/*商品搜尋 重設按鈕設定*/
+#firmSearchButton {
+    background-color: #c3a6a0e1;
+    margin-left: 40%;
+    border-radius:5%;
+    padding:0.8%;
+    border:0px
+}
+#firmReset {
+    background-color: #c3a6a0e1;
+    margin-left: 1%;
+    border-radius: 5%;
+    padding: 0.8%;
+    border:0px
+}
+#firmSearchButton:hover {
+    background-color: #c3a6a09a;
+}
+
+#firmReset:hover {
+    background-color: #c3a6a09a;
+}
+
+/*欄位框寬度調整*/
+#blockcontent input {
+    width: 19%;
+}
+#blockcontent .num {
+    width: 10%;
+}
+#blockcontent #yes {
+    width: 1%;
+}
+#blockcontent #no {
+    width: 1%;
+}
